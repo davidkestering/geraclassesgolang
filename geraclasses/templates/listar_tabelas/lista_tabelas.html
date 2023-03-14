@@ -1,0 +1,39 @@
+<html>
+<head>
+<title>Listagem de Tabelas</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body bgcolor="#FFFFFF" text="#000000">
+<center>
+	<form name="geracao" method="post" action="/processa">
+    <input type="hidden" name="fNomeBanco" value="{{ .NomeBanco }}" />
+    <table width="27%" border="1" cellspacing="0" cellpadding="0">
+     <tr align="center">
+       <td>{{ .QtdTabelas }} Tabelas do Banco : {{ .NomeBanco }}</td>
+      </tr>
+      {{ if .Tabelas }}
+
+      <tr>
+        <td align="center"> <select name="fTabelas[]" id="fTabelas" size="10" multiple>
+
+                {{ range .Tabelas }}
+            <option value="{{ . }}">{{ . }}</option>
+                {{ end }}
+
+          </select> </td>
+      </tr>
+
+      <tr>
+        <td align="center"> <input type="submit" name="Gerar" value="Gerar Classes">
+          <input type="hidden" name="sOP" value="Gerar"> </td>
+      </tr>
+      {{ else }}
+      <tr>
+        <td align="center"> O banco ainda não tem tabelas!</td>
+      </tr>
+      {{ end }}
+    </table>
+  </form>
+</center>
+</body>
+</html>

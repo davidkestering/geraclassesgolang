@@ -1,0 +1,9 @@
+package #NOME_CLASSE#
+
+import "time"
+
+type #NOME_CLASSE#Parent struct {
+    #LISTA_ATRIBUTOS_STRUCT#
+}
+
+#LISTA_FUNC_GET_SET#
