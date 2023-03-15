@@ -1,6 +1,10 @@
 package main
 
 import (
+	"fmt"
+	"geraclasses/classes/Usuario"
+	"geraclasses/classes/conexao"
+	ct "geraclasses/constantes"
 	"geraclasses/views"
 	"log"
 	"net/http"
@@ -14,6 +18,26 @@ func main() {
 	http.HandleFunc("/", views.IndexPage)
 	http.HandleFunc("/listar_tabelas", views.ListarTabelasPage)
 	http.HandleFunc("/processa", views.ProcessaPage)
+
+	//RECUPERA OK
+	oConexao := conexao.NewConexao(ct.BANCO)
+	oFachadaUsuario := Usuario.UsuarioBDParent{Conexao: oConexao}
+	oUsuario, _ := oFachadaUsuario.Recupera(1)
+	//fmt.Println(oUsuario.GetIdGrupoUsuario())
+
+	//PRESENTE
+	//oConexao := conexao.NewConexao(ct.BANCO)
+	//oFachadaUsuario := Usuario.UsuarioBDParent{Conexao: oConexao}
+	//nQtd := oFachadaUsuario.Presente(10)
+	//fmt.Println(nQtd)
+
+	//INSERT
+	//oConexao := conexao.NewConexao(ct.BANCO)
+	//oFachadaUsuario := Usuario.UsuarioBDParent{Conexao: oConexao}
+	oUsuario.SetNmUsuario("D'agua")
+	oUsuario.SetLogin("novo")
+	nIdNovoUsuario, _ := oFachadaUsuario.Insere(oUsuario)
+	fmt.Println(nIdNovoUsuario)
 
 	err := http.ListenAndServe("localhost:8080", nil)
 	if err != nil {

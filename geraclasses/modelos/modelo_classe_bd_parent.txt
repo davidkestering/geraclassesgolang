@@ -1,0 +1,52 @@
+package #NOME_CLASSE#
+
+import "fmt"
+import "time"
+import "strconv"
+import "#NOME_PROJETO#/classes/conexao"
+
+type #NOME_CLASSE#BDParent struct{
+    Conexao *conexao.Conexao
+}
+
+func (#PRIMEIRA_LETRA_NOME_CLASSE# *#NOME_CLASSE#BDParent) GetConexao() *conexao.Conexao {
+	return #PRIMEIRA_LETRA_NOME_CLASSE#.Conexao
+}
+
+func (#PRIMEIRA_LETRA_NOME_CLASSE# *#NOME_CLASSE#BDParent) Recupera(#LISTA_ATRIBUTOS_CHAVE#) (*#NOME_CLASSE#Parent, error) {
+	oConexao := #PRIMEIRA_LETRA_NOME_CLASSE#.GetConexao()
+	sSql := fmt.Sprintf("select * from #NOME_TABELA# where #COMPARACAO_CHAVE_ATRIBUTO_QUERY#",#COMPARACAO_CHAVE_ATRIBUTO_PARAM#)
+	oConexao.Execute(sSql)
+	oReg := oConexao.FetchObject()
+	if oReg.Next() {
+		var o#NOME_CLASSE# #NOME_CLASSE#Parent
+		err := oReg.Scan(#LISTA_CAMPOS_REG#)
+		vData := o#NOME_CLASSE#.GetDtCadastro()
+        data, _ := time.Parse("2006-01-02T15:04:05.999Z", vData)
+        dDataCadastro := data.Format("2006-01-02 15:04:05")
+        o#NOME_CLASSE#.SetDtCadastro(dDataCadastro)
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan row: %v", err)
+		}
+		return &o#NOME_CLASSE#, nil
+	}
+	return nil, nil
+}
+
+func (#PRIMEIRA_LETRA_NOME_CLASSE# *#NOME_CLASSE#BDParent) Presente(#LISTA_ATRIBUTOS_CHAVE#) int64 {
+	oConexao := #PRIMEIRA_LETRA_NOME_CLASSE#.GetConexao()
+	sSql := fmt.Sprintf("select * from #NOME_TABELA# where #COMPARACAO_CHAVE_ATRIBUTO_QUERY#",#COMPARACAO_CHAVE_ATRIBUTO_PARAM#)
+	oConexao.Execute(sSql)
+	nQtd, _ := oConexao.RecordCount()
+	return nQtd
+}
+
+func (#PRIMEIRA_LETRA_NOME_CLASSE# *#NOME_CLASSE#BDParent) Insere(o#NOME_CLASSE# #NOME_CLASSE#) int64, error {
+	oConexao := #PRIMEIRA_LETRA_NOME_CLASSE#.GetConexao()
+	sSql = f"insert into #NOME_TABELA# (#LISTA_CAMPOS_NAO_CHAVE#) values (#VALORES_NAO_CHAVE#) SELECT CONVERT(bigint,SCOPE_IDENTITY());"
+    oConexao.executeInsert(sSql)
+    nId = oConexao.getLastId()
+    if nId:
+        return nId
+    return oConexao.getConsulta()
+}

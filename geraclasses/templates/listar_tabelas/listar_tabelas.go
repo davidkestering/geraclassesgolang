@@ -5,6 +5,7 @@ import (
 	"geraclasses/classes/conexao"
 	construtor "geraclasses/classes/constructor"
 	"geraclasses/classes/geradora_basica"
+	"geraclasses/classes/geradora_bd"
 	ct "geraclasses/constantes"
 	"html/template"
 	"net/http"
@@ -135,6 +136,8 @@ func Processa(w http.ResponseWriter, r *http.Request) {
 			oConstrutor := construtor.NewConstrutor(sNomeBanco, sTabela)
 			oGeradoraBasica := geradora_basica.NewGeradoraBasica(oConstrutor)
 			oGeradoraBasica.Gera()
+			oGeradoraBD := geradora_bd.NewGeradoraBD(oConstrutor)
+			oGeradoraBD.Gera()
 		}
 
 		//fmt.Println(sNomeBanco)

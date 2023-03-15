@@ -112,6 +112,8 @@ func (gerador *GeradoraBasica) Gera() {
 	err = ioutil.WriteFile(sCaminhoArquivoParent, []byte(sArquivoParent), 0644)
 	if err != nil {
 		// handle error
+		fmt.Println(err)
+		return
 	}
 
 	//f, _ = os.Create(sCaminhoArquivoParent)

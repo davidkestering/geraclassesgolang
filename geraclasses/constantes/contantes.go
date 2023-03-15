@@ -3,6 +3,8 @@ package constantes
 import (
 	"fmt"
 	"net"
+	"os"
+	"path/filepath"
 	"time"
 )
 
@@ -27,7 +29,7 @@ var (
 	//IP_SERVIDOR = os.Getenv("SERVER_ADDR") + os.Getenv("LOCAL_ADDR") + "SEM IP"
 	IP_USUARIO  = RetornaIpUsuario()
 	IP_SERVIDOR = RetornaIpServidor()
-	CAMINHO     = "../../../../"
+	CAMINHO     = RetornaNomedoProjeto()
 	SITE        = "../../../../admin/"
 	DATAHORA    = time.Now().Format("2006-01-02 15:04:05")
 )
@@ -66,4 +68,18 @@ func RetornaIpServidor() string {
 	}
 
 	return RetornaIpUsuario()
+}
+
+func RetornaNomedoProjeto() string {
+	wd, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+
+	// Obtém o nome do pacote (e do projeto) a partir do nome do diretório
+	pkgName := filepath.Base(wd)
+
+	// Cria a importação com o nome do pacote e imprime na tela
+	importPath := fmt.Sprintf("%s", pkgName)
+	return importPath
 }

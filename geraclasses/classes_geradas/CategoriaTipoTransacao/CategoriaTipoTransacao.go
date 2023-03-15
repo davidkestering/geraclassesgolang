@@ -12,7 +12,7 @@ type CategoriaTipoTransacao struct {
 	
 }
 
-func NewCategoriaTipoTransacao(nId int64,sDescricao string,dDtCadastro time.Time,bPublicado int,bAtivo int) *CategoriaTipoTransacao {
+func _ (nId int64,sDescricao string,dDtCadastro time.Time,bPublicado int,bAtivo int) *CategoriaTipoTransacao {
     oCategoriaTipoTransacao := &CategoriaTipoTransacao{}
 	
     oCategoriaTipoTransacao.SetId(nId)

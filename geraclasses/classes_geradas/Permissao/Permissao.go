@@ -12,7 +12,7 @@ type Permissao struct {
 	
 }
 
-func NewPermissao(nIdTipoTransacao int64,nIdGrupoUsuario int64,dDtCadastro time.Time,bPublicado int,bAtivo int) *Permissao {
+func _ (nIdTipoTransacao int64,nIdGrupoUsuario int64,dDtCadastro time.Time,bPublicado int,bAtivo int) *Permissao {
     oPermissao := &Permissao{}
 	
     oPermissao.SetIdTipoTransacao(nIdTipoTransacao)

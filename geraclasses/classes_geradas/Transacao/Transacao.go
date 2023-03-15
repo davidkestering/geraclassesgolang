@@ -18,7 +18,7 @@ type Transacao struct {
 	
 }
 
-func NewTransacao(nId int64,nIdTipoTransacao int64,nIdUsuario int64,sObjeto string,sCampo string,sValorAntigo string,sValorNovo string,sIp string,dDtCadastro time.Time,bPublicado int,bAtivo int) *Transacao {
+func _ (nId int64,nIdTipoTransacao int64,nIdUsuario int64,sObjeto string,sCampo string,sValorAntigo string,sValorNovo string,sIp string,dDtCadastro time.Time,bPublicado int,bAtivo int) *Transacao {
     oTransacao := &Transacao{}
 	
     oTransacao.SetId(nId)

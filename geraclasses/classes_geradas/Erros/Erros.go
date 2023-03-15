@@ -14,7 +14,7 @@ type Erros struct {
 	
 }
 
-func NewErros(nId int64,sErro string,nIdUsuario int64,sIp string,dDtCadastro time.Time,bPublicado int,bAtivo int) *Erros {
+func _ (nId int64,sErro string,nIdUsuario int64,sIp string,dDtCadastro time.Time,bPublicado int,bAtivo int) *Erros {
     oErros := &Erros{}
 	
     oErros.SetId(nId)

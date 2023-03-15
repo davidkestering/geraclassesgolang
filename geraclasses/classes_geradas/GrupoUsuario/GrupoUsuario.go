@@ -12,7 +12,7 @@ type GrupoUsuario struct {
 	
 }
 
-func NewGrupoUsuario(nId int64,sNmGrupoUsuario string,dDtCadastro time.Time,bPublicado int,bAtivo int) *GrupoUsuario {
+func _ (nId int64,sNmGrupoUsuario string,dDtCadastro time.Time,bPublicado int,bAtivo int) *GrupoUsuario {
     oGrupoUsuario := &GrupoUsuario{}
 	
     oGrupoUsuario.SetId(nId)

@@ -1,5 +1,6 @@
 package conexao
 
+import "C"
 import (
 	"database/sql"
 	"errors"
@@ -20,6 +21,7 @@ type Conexao struct {
 	QtdTabelas     int64
 	QtdCampos      int64
 	Servidor       string
+	LastId         int64
 }
 
 type Campos struct {
@@ -75,20 +77,37 @@ func (c *Conexao) ExecuteInsert(sSql string) error {
 	}
 	defer tx.Rollback()
 
-	result, err := tx.Exec(sSql)
+	//result, err := tx.Exec(sSql)
+	err = tx.QueryRow(sSql).Scan(&c.LastId)
+	//rows, err := tx.Query(sSql)
 	if err != nil {
 		c.SqlError = err
 		c.Erro = fmt.Errorf("Ocorreu o seguinte erro na consulta: %s Query: %s", c.SqlError, sSql)
 		c.InsereErroSql(sSql)
 		return c.GetErro()
 	}
+	//for rows.Next() {
+	//	rows.Scan(c.LastId)
+	//}
+
+	//row, err := c.Conexao.Query(sSql)
+	//if err != nil {
+	//	c.SqlError = err
+	//	c.Erro = fmt.Errorf("Ocorreu o seguinte erro na consulta: %s Query: %s", c.SqlError, sSql)
+	//	c.InsereErroSql(sSql)
+	//	return c.GetErro()
+	//} else {
+	//	row.Next()
+	//	row.Scan(&c.LastId)
+	//}
+	//c.LastId, _ = result.LastInsertId()
 
 	err = tx.Commit()
 	if err != nil {
 		return err
 	}
 
-	c.ConsultaInsert = result
+	//c.ConsultaInsert = result
 
 	return nil
 }
@@ -115,11 +134,15 @@ func (c *Conexao) InsereErroSql(sSql string) error {
 	sMsgErro := ""
 	if c.GetErro() != nil {
 		sMsgErro = c.EscapeString(c.GetErro().Error())
+		//fmt.Println(sMsgErro)
 	}
 
-	sSqlErroExecucao := fmt.Sprintf("insert into seg_erros_sql (erro,ip,publicado) values ('%s','%s',1)", sMsgErro, ct.IP_SERVIDOR)
+	sSqlErroExecucao := fmt.Sprintf(`insert into seg_erros_sql (erro,ip,publicado) values ('%s','%s',1)`, sMsgErro, ct.IP_SERVIDOR)
+	//fmt.Println(sSqlErroExecucao)
 	_, err = tx.Exec(sSqlErroExecucao)
 	if err != nil {
+		//fmt.Println("NAO SALVOU O ERRO")
+		//fmt.Println(err)
 		c.SqlError = err
 		c.Erro = errors.New(fmt.Sprintf("Ocorreu o seguinte erro na inserção do erro na tabela seg_erros_sql: %s <br> Query: %s", c.SqlError.Error(), sSql))
 		return fmt.Errorf("Ocorreu o seguinte erro na inserção do erro na tabela seg_erros_sql: %s <br> Query: %s", err.Error(), sSqlErroExecucao)
@@ -186,17 +209,24 @@ func (c *Conexao) GetConsulta() *sql.Rows {
 }
 
 func (c *Conexao) EscapeString(sAtributo string) string {
-	return strings.ReplaceAll(sAtributo, "'", "\\'")
+	return strings.ReplaceAll(sAtributo, "'", "''")
 }
 
 func (c *Conexao) UnescapeString(sEscapedString string) string {
-	return strings.ReplaceAll(sEscapedString, "\\", "")
+	return strings.ReplaceAll(sEscapedString, "''", "'")
 }
 
 func (c *Conexao) GetLastId() int64 {
-	var lastID int64
-	c.Conexao.QueryRow("SELECT SCOPE_IDENTITY()").Scan(&lastID)
-	return lastID
+	//var lastID int64
+	//rows, _ := c.Conexao.Query("SELECT SCOPE_IDENTITY()")
+	//for rows.Next() {
+	//	fmt.Println(rows.Err())
+	//	rows.Scan(&lastID)
+	//	fmt.Println(lastID)
+	//	fmt.Println(rows.Err())
+	//}
+	//return lastID
+	return c.LastId
 }
 
 func (c *Conexao) SetQtdTabelas(nQtdTabelas int64) {

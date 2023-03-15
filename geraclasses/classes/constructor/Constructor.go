@@ -89,7 +89,7 @@ func (c *Construtor) GeraAtributos() {
 		}
 		if matched, _ := regexp.MatchString(PadraoData, Campo.DataType); matched {
 			NomeAtributo = "d" + strings.Title(strings.ToLower(Campo.ColumnName))
-			TipoAtributo = "time.Time"
+			TipoAtributo = "string"
 			PassouEmPadrao = true
 		}
 		if Campo.DataType == "tinyint" {

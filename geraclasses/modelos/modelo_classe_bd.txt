@@ -1,0 +1,12 @@
+package #NOME_CLASSE#
+
+import "#NOME_PROJETO#/classes/conexao"
+
+
+type #NOME_CLASSE#BD struct {
+    #NOME_CLASSE#BDParent
+}
+
+func _ (sBanco string) *#NOME_CLASSE#BD {
+    return &#NOME_CLASSE#BD{#NOME_CLASSE#BDParent: #NOME_CLASSE#BDParent{Conexao: conexao.NewConexao(sBanco)}}
+}
